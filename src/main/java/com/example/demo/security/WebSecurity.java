@@ -1,6 +1,7 @@
 package com.example.demo.security;
 
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -32,7 +33,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .addFilter(getJWTAuthenticationFilter())
+                .addFilter(new JWTAuthenticationFilter(authenticationManager()))
                 .addFilter(new JWTAuthorizationFilter(authenticationManager()))
                 // this disables session creation on Spring Security
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -43,12 +44,14 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
     }
 
+    /*
     @Bean
-    public JWTAuthenticationFilter getJWTAuthenticationFilter() throws Exception {
-        final JWTAuthenticationFilter filter = new JWTAuthenticationFilter(authenticationManager());
+    public JWTAuthenticationFilter getJWTAuthenticationFilter(AuthenticationManager manager) throws Exception {
+        final JWTAuthenticationFilter filter = new JWTAuthenticationFilter(manager);
         filter.setFilterProcessesUrl("/api/login");
         return filter;
     }
+     */
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
