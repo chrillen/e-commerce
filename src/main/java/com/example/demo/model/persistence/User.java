@@ -18,10 +18,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Table(name = "user")
 public class User {
 
+	public User() {
+		this.id = 0L;
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@JsonProperty
-	private long id;
+	private Long id;
 	
 	@Column(nullable = false, unique = true)
 	@JsonProperty
@@ -52,11 +56,11 @@ public class User {
 		this.cart = cart;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
