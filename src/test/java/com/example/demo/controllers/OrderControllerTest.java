@@ -37,7 +37,7 @@ public class OrderControllerTest {
     }
 
     @Test
-    public void createOrderTest(){
+    public void createOrderTest() {
         User u = UserControllerTest.createUser();
         u.setCart(CartControllerTest.generateCart(u));
         when(userRepository.findByUsername(u.getUsername())).thenReturn(u);
@@ -46,11 +46,11 @@ public class OrderControllerTest {
         assertEquals(200,response.getStatusCodeValue());
         UserOrder userOrder = response.getBody();
         assertNotNull(userOrder);
-        assertEquals("Username",userOrder.getUser().getUsername());
+        assertEquals("test",userOrder.getUser().getUsername());
     }
 
     @Test
-    public void getOrdersByNameTest(){
+    public void getOrdersByNameTest() {
         List<UserOrder> r = new ArrayList<>();
         r.add(createOrder());
         User u = UserControllerTest.createUser();

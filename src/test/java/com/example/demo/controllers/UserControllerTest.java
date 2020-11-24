@@ -35,14 +35,14 @@ public class UserControllerTest {
 
     @Test
     public void createUserTest() throws Exception {
-        CreateUserRequest r = createUserRequest("username","testpassword");
+        CreateUserRequest r = createUserRequest("test","testpassword");
         final ResponseEntity<User> response = userController.createUser(r);
         assertNotNull(response);
         assertEquals(200,response.getStatusCodeValue());
         User u = response.getBody();
         assertNotNull(u);
         assertEquals(Long.valueOf("0"),u.getId());
-        assertEquals("username",u.getUsername());
+        assertEquals("test",u.getUsername());
         assertEquals(encoder.encode("testpassword"),u.getPassword());
     }
 
@@ -60,8 +60,8 @@ public class UserControllerTest {
 
     @Test
     public void getUserByName(){
-        when(userRepository.findByUsername("username")).thenReturn(createUser());
-        ResponseEntity<User> response = userController.findByUserName("username");
+        when(userRepository.findByUsername("test")).thenReturn(createUser());
+        ResponseEntity<User> response = userController.findByUserName("test");
 
         assertNotNull(response);
         assertEquals(200,response.getStatusCodeValue());
@@ -89,8 +89,8 @@ public class UserControllerTest {
     public static User createUser(){
         User user = new User();
         user.setId(1L);
-        user.setUsername("Username");
-        user.setPassword("Password");
+        user.setUsername("test");
+        user.setPassword("testpassword");
         user.setCart(emptyCart());
         return user;
     }

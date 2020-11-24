@@ -49,21 +49,24 @@ public class UserController {
 	
 	@PostMapping("/create")
 	public ResponseEntity<User> createUser(@RequestBody CreateUserRequest createUserRequest) {
-		User user = new User();
-		user.setUsername(createUserRequest.getUsername());
-		logger.info("Username set with:",createUserRequest.getUsername());
-		Cart cart = new Cart();
-
-		if(createUserRequest.getPassword().length() < 7 || !createUserRequest.getPassword().equals(createUserRequest.getConfirmPassword()))
-		{
-			logger.error("Error with user password. Cannot create user {}",createUserRequest.getUsername());
-			return ResponseEntity.badRequest().build();
+		try {
+			User user = new User();
+			user.setUsername(createUserRequest.getUsername());
+			Cart cart = new Cart();
+			if (createUserRequest.getPassword().length() < 7 || !createUserRequest.getPassword().equals(createUserRequest.getConfirmPassword())) {
+				logger.error("Error with user password. Cannot create user {}", createUserRequest.getUsername());
+				return ResponseEntity.badRequest().build();
+			}
+			user.setPassword(bCryptPasswordEncoder.encode(createUserRequest.getPassword()));
+			user.setCart(cart);
+			userRepository.save(user);
+			cartRepository.save(cart);
+			logger.info("User saved successfully");
+			return ResponseEntity.ok(user);
+		}  catch (Exception ex) {
+			logger.error("user exception: ", ex);
+			return ResponseEntity.status(500).build();
 		}
-		user.setPassword(bCryptPasswordEncoder.encode(createUserRequest.getPassword()));
-		user.setCart(cart);
-		userRepository.save(user);
-		cartRepository.save(cart);
-		return ResponseEntity.ok(user);
 	}
 	
 }

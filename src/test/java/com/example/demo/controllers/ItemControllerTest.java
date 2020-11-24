@@ -33,7 +33,7 @@ public class ItemControllerTest {
     }
 
     @Test
-    public void getItemsTest(){
+    public void getItemsTest() {
         ResponseEntity<List<Item>> response = itemController.getItems();
         List<Item> itemList =response.getBody();
         assertNotNull(response);
@@ -42,38 +42,33 @@ public class ItemControllerTest {
     }
 
     @Test
-    public void getItemByIdTest(){
+    public void getItemByIdTest() {
         when(itemRepository.findById(1L)).thenReturn(Optional.of(createItem()));
-
         ResponseEntity<Item> response = itemController.getItemById(1L);
-
         assertNotNull(response);
         assertEquals(200,response.getStatusCodeValue());
-
         Item item= response.getBody();
         assertNotNull(item);
     }
 
     @Test
-    public void getItemByNameTest(){
-
+    public void getItemByNameTest() {
         List<Item> items = new ArrayList<>();
         items.add(createItem());
-        when(itemRepository.findByName("Created Item")).thenReturn(items);
-        ResponseEntity<List<Item>> response = itemController.getItemsByName("Created Item");
-
+        when(itemRepository.findByName("Snickers")).thenReturn(items);
+        ResponseEntity<List<Item>> response = itemController.getItemsByName("Snickers");
         assertNotNull(response);
         assertEquals(200, response.getStatusCodeValue());
         assertEquals(items, response.getBody());
     }
 
     //region helper functions
-    public static Item createItem(){
+    public static Item createItem() {
         Item item = new Item();
         item.setId(1L);
-        item.setName("Created Item");
-        item.setDescription("This is created item");
-        item.setPrice(BigDecimal.valueOf(10.0));
+        item.setName("Snickers");
+        item.setDescription("Snickers Snackbar");
+        item.setPrice(BigDecimal.valueOf(1.5));
         return item;
     }
     //endregion
